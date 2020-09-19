@@ -1,75 +1,35 @@
 import java.util.*;
 
 public abstract class Question {
-    private String questionContent;
-    protected List<String> questionCandidates;
+    protected String questionContent;
 
-    Question() {
-        questionContent = "";
-        questionCandidates = new ArrayList<>();
+    Question(String question) {
+        questionContent = question;
     }
 
-    public void addQuestion(String question) {
-        if (questionContent != "") {
-            System.out.println("Your previous question is \"" + questionContent + "\"");
-            System.out.println("Do you want to change? (Y/N)");
-            Scanner in = new Scanner(System.in);
-            String choice = in.next();
-            if (choice.toUpperCase().charAt(0) == 'Y') questionContent = question;
-        }
-        else questionContent = question;
-
-        System.out.println("Your current question is \"" + questionContent + "\"");
-    }
-
-    public void addCandidate(String answer) {
-        questionCandidates.add(answer);
-    }
-
-    public String toString() {
-        String outputConsole = questionContent + "\n";
-        for (int i = 0; i < questionCandidates.size(); i++) {
-            outputConsole += "\t" + (char)(65+i) + ". " + questionCandidates.get(i);
-        }
-        return outputConsole;
-    }
+    public abstract String toString();
 }
 
 class MultipleChoices extends Question {
-    private List<String> correctAnswers;
+    private List<String> questionCandidates;
 
-    MultipleChoices() {
-        correctAnswers = new ArrayList<>();
-    }
+    MultipleChoices(String question) {
+        super(question);
+        questionCandidates = new ArrayList<>();
 
-    void addCorrect(int index) {
-        String answer = questionCandidates.get(index);
-        if (!correctAnswers.contains(answer))
-            correctAnswers.add(answer);
-    }
-}
+        System.out.print("How many answers to select? (3-6)");
+        Scanner in = new Scanner(System.in);
+        int numOfCandidates = in.nextInt();
+        if (numOfCandidates <= 3) numOfCandidates = 3;
+        else if (numOfCandidates >= 6) numOfCandidates = 6;
 
-class SingleChoice extends Question {
-    private String correctAnswer;
-
-    SingleChoice() {
-        correctAnswer = "";
-    }
-
-    void addCorrect(int index) {
-        String answer = questionCandidates.get(index)
-        if (correctAnswer != "") {
-            if (answer == correctAnswer) System.out.println("The correct answer is the same! Please choose other.");
-            else {
-                System.out.println("Your previous correct answer is \"" + correctAnswer + "\"");
-                System.out.println("Do you want to change? (Y/N)");
-                Scanner in = new Scanner(System.in);
-                String choice = in.next();
-                if (choice.toUpperCase().charAt(0) == 'Y') correctAnswer = answer;
-            }
+        for (int i = 0; i < numOfCandidates; i++) {
+            System.out.print("Candidate #" + (i+1) + ": ");
+            questionCandidates.add(in.nextLine());
         }
-        else correctAnswer = answer;
+    }
 
-        System.out.println("The current correct answer is \"" + correctAnswer + "\"");
+    public String toString() {
+        String questionPresentation = questionContent + "\n";
     }
 }
