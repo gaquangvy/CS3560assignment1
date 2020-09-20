@@ -1,5 +1,15 @@
 public class Student {
-    private String StudentID;
+    private String id;
+    private char answerChoice;
 
-    Student(String id) {StudentID = id;}
+    //initial class with only student id
+    Student(String id) {this.id = id;}
+
+    //getter and setter for answerChoice
+    public void setAnswer(char answer) {
+        answerChoice = answer;
+    }
+    public char getAnswerChoice() {
+        return answerChoice;
+    }
 }

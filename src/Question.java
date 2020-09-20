@@ -1,21 +1,14 @@
 import java.util.*;
 
 public abstract class Question {
-    protected String questionContent;
-
-    Question(String question) {
-        questionContent = question;
-    }
-
-    public abstract String toString();
+    protected String type;
+    protected List<String> candidates;
 }
 
 class MultipleChoices extends Question {
-    private List<String> questionCandidates;
 
-    MultipleChoices(String question) {
-        super(question);
-        questionCandidates = new ArrayList<>();
+    MultipleChoices() {
+        type = "Multiple Choices";
 
         System.out.print("How many answers to select? (3-6)");
         Scanner in = new Scanner(System.in);
@@ -24,12 +17,15 @@ class MultipleChoices extends Question {
         else if (numOfCandidates >= 6) numOfCandidates = 6;
 
         for (int i = 0; i < numOfCandidates; i++) {
-            System.out.print("Candidate #" + (i+1) + ": ");
-            questionCandidates.add(in.nextLine());
+            candidates.add("" + (char)(i+65));
         }
     }
+}
 
-    public String toString() {
-        String questionPresentation = questionContent + "\n";
+class SingleChoice extends Question {
+    SingleChoice() {
+        type = "Single Choice";
+        candidates.add("0. False.");
+        candidates.add("1. True.");
     }
 }
