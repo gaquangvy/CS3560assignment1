@@ -1,15 +1,36 @@
 import java.util.*;
 
 public abstract class Question {
-    protected String type;
-    protected List<String> candidates;
+    private String type;
+    private List<String> candidates;
+
+    Question() {
+        type = new String();
+        candidates = new ArrayList<>();
+    }
+
+    //getter and setter for type
+    public String getType() {
+        return type;
+    }
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    //getter and setter for candidates
+    public List<String> getCandidates() {
+        return candidates;
+    }
+    public void setCandidates(List<String> candidates) {
+        this.candidates = candidates;
+    }
 }
 
 class MultipleChoices extends Question {
-
     MultipleChoices() {
-        type = "Multiple Choices";
+        setType("Multiple Choices");
 
+        List<String> candidates = new ArrayList<>();
         System.out.print("How many answers to select? (3-6)");
         Scanner in = new Scanner(System.in);
         int numOfCandidates = in.nextInt();
@@ -19,13 +40,16 @@ class MultipleChoices extends Question {
         for (int i = 0; i < numOfCandidates; i++) {
             candidates.add("" + (char)(i+65));
         }
+        setCandidates(candidates);
     }
 }
 
 class SingleChoice extends Question {
     SingleChoice() {
-        type = "Single Choice";
+        setType("Single Choice");
+        List<String> candidates = new ArrayList<>();
         candidates.add("0. False.");
         candidates.add("1. True.");
+        setCandidates(candidates);
     }
 }
