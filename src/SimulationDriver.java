@@ -13,7 +13,7 @@ public class SimulationDriver {
         char questionChoice;
         do {
             System.out.print("Please choose (M)ultiple Choices or (S)ingle Choice: ");
-            questionChoice = in.next().toLowerCase().charAt(0);
+            questionChoice = in.nextLine().toLowerCase().charAt(0);
         } while (questionChoice != 'm' && questionChoice != 's');
 
         if (questionChoice == 'm') question = new MultipleChoices();
