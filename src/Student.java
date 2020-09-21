@@ -1,17 +1,23 @@
-import java.util.List;
-
 public class Student {
-    private String id;
-    private List<Character> answerChoices;
+    private final String id;
+    private String answer;
 
     //initial class with only student id
-    Student(String id) {this.id = id;}
-
-    //getter and setter for answerChoice
-    public void setAnswerChoices(List<Character> answerChoices) {
-        this.answerChoices = answerChoices;
+    Student(String id) {
+        this.id = id;
+        answer = "";
     }
-    public List<Character> getAnswerChoices() {
-        return answerChoices;
+
+    //getter and setter for answer
+    public void setAnswer(String answer) {
+        this.answer = answer;
+    }
+    public String getAnswer() {
+        return answer;
+    }
+
+    //notification of choosing answer
+    public String notification() {
+        return "Student " + id + " voted " + answer;
     }
 }

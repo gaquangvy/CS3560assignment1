@@ -5,7 +5,7 @@ public abstract class Question {
     private List<String> candidates;
 
     Question() {
-        type = new String();
+        type = "";
         candidates = new ArrayList<>();
     }
 
@@ -29,15 +29,8 @@ public abstract class Question {
 class MultipleChoices extends Question {
     MultipleChoices() {
         setType("Multiple Choices");
-
         List<String> candidates = new ArrayList<>();
-        System.out.print("How many answers to select? (3-6)");
-        Scanner in = new Scanner(System.in);
-        int numOfCandidates = in.nextInt();
-        if (numOfCandidates <= 3) numOfCandidates = 3;
-        else if (numOfCandidates >= 6) numOfCandidates = 6;
-
-        for (int i = 0; i < numOfCandidates; i++) {
+        for (int i = 0; i < 4; i++) {
             candidates.add("" + (char)(i+65));
         }
         setCandidates(candidates);

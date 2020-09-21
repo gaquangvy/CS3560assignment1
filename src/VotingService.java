@@ -3,14 +3,14 @@ import java.util.List;
 import java.util.Scanner;
 
 public class VotingService implements iVote {
-    private Question question;
+    private final Question question;
     private String questionContent;
     private List<String> answers;
-    private List<Integer> answerStatistics;
+    private final List<Integer> answerStatistics;
 
     VotingService(Question question) {
         this.question = question;
-        questionContent = new String();
+        questionContent = "";
         answers = new ArrayList<>();
         answerStatistics = new ArrayList<>();
     }
@@ -20,15 +20,15 @@ public class VotingService implements iVote {
         Scanner in = new Scanner(System.in);
 
         //question
-        System.out.println("Please create a question:");
+        System.out.print("Please create a question: ");
         questionContent = in.nextLine();
 
         //answers
-        if (question.getType() == "Multiple Choice") {
+        if (question.getType().equals("Multiple Choices")) {
             List<String> selections = question.getCandidates();
             System.out.println("Please type answer:");
-            for (int i = 0; i < selections.size(); i++) {
-                System.out.print(selections.get(i) + " - ");
+            for (String selection : selections) {
+                System.out.print(selection + " - ");
                 answers.add(in.nextLine());
                 answerStatistics.add(0);
             }
@@ -42,51 +42,48 @@ public class VotingService implements iVote {
 
     @Override
     public String previewQuestion() {
-        String preview = new String();
-        if (question.getType() == "Single Choice") preview += "(1-True or 0-False) ";
-        preview += questionContent + "\n";
+        StringBuilder preview = new StringBuilder();
+        if (question.getType().equals("Single Choice")) preview.append("(1-True or 0-False) ");
+        preview.append(questionContent).append("\n");
 
-        if (question.getType() == "Multiple Choice") {
+        if (question.getType().equals("Multiple Choices")) {
             List<String> selections = question.getCandidates();
             for (int i = 0; i < selections.size(); i++) {
-                preview += "\t" + selections.get(i) + " - " + answers.get(i) + "\n";
+                preview.append("\t").append(selections.get(i)).append(" - ").append(answers.get(i)).append("\n");
             }
         }
 
-        return preview;
+        return preview.toString();
     }
 
     @Override
-    public void collectAnswer(char answer) {
+    public void collectAnswer(String answer) {
         List<String> selections = question.getCandidates();
         for (int i = 0; i < selections.size(); i++) {
-            if (selections.get(i).charAt(0) == answer) answerStatistics.set(i, answerStatistics.get(i) + 1);
+            if (selections.get(i).equals(answer)) answerStatistics.set(i, answerStatistics.get(i) + 1);
         }
     }
 
     @Override
     public String statistic() {
-        int sum = 0;
-        for (int i = 0; i < answerStatistics.size(); i++) {
-            sum += answerStatistics.get(i);
-        }
+        int sum = answerStatistics.stream().mapToInt(answerStatistic -> answerStatistic).sum();
 
-        String stat = "Answering Result:\n";
+        StringBuilder stat = new StringBuilder("Answering Result:\n");
         List<String> selections = question.getCandidates();
         for (int i = 0; i < answerStatistics.size(); i++) {
-            stat += "\t(" + selections.get(i);
-            stat += ")\t" + answerStatistics.get(i);
-            stat += "/" + sum;
-            stat += "|" + "*".repeat(answerStatistics.get(i)) + "\n";
+            stat.append("\t(").append(selections.get(i));
+            stat.append(")\t").append(answerStatistics.get(i));
+            stat.append("/").append(sum);
+            stat.append("\t|").append("*".repeat(answerStatistics.get(i))).append("\n");
         }
 
-        return stat;
+        return stat.toString();
     }
 }
 
 interface iVote {
-    public void createQuestion();
-    public String previewQuestion()
-    public void collectAnswer(char answer);
-    public String statistic();
+    void createQuestion();
+    String previewQuestion();
+    void collectAnswer(String answer);
+    String statistic();
 }
